@@ -1,21 +1,23 @@
 import os
 import time
-import requests # เราจะใช้ตัวนี้แทน
+import requests
 
 target = os.getenv('TARGET_HOST')
-# ใส่ http:// นำหน้า IP หรือ DDNS ของคุณ
-url = f"http://{target}" 
+url = f"http://{target}"
 
-timeout = time.time() + 60 * 4.8
-print(f"Web Heartbeat started to {url}")
+# รันประมาณ 4 นาทีครึ่ง
+timeout = time.time() + 270 
+
+print(f"Web Heartbeat started to {url}...", flush=True)
 
 while time.time() < timeout:
     try:
-        # พยายามเรียกไปที่หน้ากาก Router (ใส่ timeout สั้นๆ)
-        requests.get(url, timeout=2)
-        print("Knock! Knock! (Packet Sent)")
+        # สั่งยิงสัญญาณเคาะประตู
+        requests.get(url, timeout=1)
+        print("Knock Success! (Signal Sent)", flush=True)
     except:
-        # ถึงจะ Error (เพราะเราไม่ได้ Login) แต่ Packet ก็วิ่งไปถึง Router แล้ว
-        print("Signal Sent (Router Reached)")
+        # ต่อให้โดนบล็อกขากลับ แต่ขาไปถึงตัวเครื่องแน่นอน
+        print("Knock Sent! (Reached Router)", flush=True)
     
-    time.sleep(1) # กระพริบวินาทีละครั้ง
+    # พัก 0.5 วินาทีเพื่อให้ไฟกระพริบถี่ยิบ
+    time.sleep(0.5)
