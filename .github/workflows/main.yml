@@ -1,0 +1,16 @@
+name: Router Heartbeat
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # สั่งรันทุก 5 นาที
+  workflow_dispatch: # เพิ่มปุ่มกดรันเองด้วยมือ
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Script
+        env:
+          TARGET_HOST: ${{ secrets.TARGET_HOST }}
+        run: python ping_script.py
