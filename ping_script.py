@@ -2,13 +2,13 @@ import os
 import time
 
 target = os.getenv('TARGET_HOST')
-timeout = time.time() + 60 * 4.8 
+# รันแค่ 1 นาทีเพื่อทดสอบก่อน
+timeout = time.time() + 60 
 
-print(f"Heartbeat started to {target}")
+print(f"Testing connection to {target}...")
 
 while time.time() < timeout:
-    # ส่ง ping แค่ 1 ครั้ง (เพื่อให้ Router ไม่มองว่าเป็น Flood)
-    os.system(f"ping -c 1 {target}")
-    
-    # พัก 1 วินาที (เพื่อให้ไฟกระพริบเป็นจังหวะสม่ำเสมอ)
-    time.sleep(1)
+    # ส่ง ping แค่ครั้งเดียว และรอการตอบกลับ 2 วินาที
+    os.system(f"ping -c 1 -W 2 {target}")
+    # เว้นระยะห่าง 2 วินาที ให้ Router หายเหนื่อย
+    time.sleep(2)
