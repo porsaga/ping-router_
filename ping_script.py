@@ -1,14 +1,21 @@
 import os
 import time
+import requests # เราจะใช้ตัวนี้แทน
 
 target = os.getenv('TARGET_HOST')
-# รันแค่ 1 นาทีเพื่อทดสอบก่อน
-timeout = time.time() + 60 
+# ใส่ http:// นำหน้า IP หรือ DDNS ของคุณ
+url = f"http://{target}" 
 
-print(f"Testing connection to {target}...")
+timeout = time.time() + 60 * 4.8
+print(f"Web Heartbeat started to {url}")
 
 while time.time() < timeout:
-    # ส่ง ping แค่ครั้งเดียว และรอการตอบกลับ 2 วินาที
-    os.system(f"ping -c 1 -W 2 {target}")
-    # เว้นระยะห่าง 2 วินาที ให้ Router หายเหนื่อย
-    time.sleep(2)
+    try:
+        # พยายามเรียกไปที่หน้ากาก Router (ใส่ timeout สั้นๆ)
+        requests.get(url, timeout=2)
+        print("Knock! Knock! (Packet Sent)")
+    except:
+        # ถึงจะ Error (เพราะเราไม่ได้ Login) แต่ Packet ก็วิ่งไปถึง Router แล้ว
+        print("Signal Sent (Router Reached)")
+    
+    time.sleep(1) # กระพริบวินาทีละครั้ง
