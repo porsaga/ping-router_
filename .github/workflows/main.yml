@@ -2,15 +2,24 @@ name: Router Heartbeat
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # สั่งรันทุก 5 นาที
-  workflow_dispatch: # เพิ่มปุ่มกดรันเองด้วยมือ
+    - cron: '*/5 * * * *' # รันอัตโนมัติทุก 5 นาที
+  workflow_dispatch: # ปุ่มสำหรับกดรันเองด้วยมือ
 
 jobs:
-  ping:
+  heartbeat:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Script
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Heartbeat Script
         env:
           TARGET_HOST: ${{ secrets.TARGET_HOST }}
         run: python ping_script.py
