@@ -15,5 +15,5 @@ timeout = time.time() + 60 * 4.8
 
 while time.time() < timeout:
     # ยิงรัว 5 ครั้ง ทุก 0.2 วินาที (ไฟกระพริบถี่ยิบแต่ปลอดภัย)
-    os.system(f"ping -c 5 -i 0.2 {target}")
-    time.sleep(1) # พัก 1 วินาทีแล้วยิงต่อ
+    os.system(f"ping -c 1 {target}")
+    time.sleep(3) # พัก 1 วินาทีแล้วยิงต่อ
